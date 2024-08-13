@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart'; // For loading the PDF file from assets
-import 'package:path_provider/path_provider.dart'; // For accessing device storage
 import 'dart:io'; // For file handling
-
+import 'dart:typed_data'; // For handling binary data
+import 'package:path_provider/path_provider.dart'; // For accessing device storage
 import 'main_drawer.dart'; // Import the main drawer
+import 'pdfViewScreen.dart'; // Import the PDF view screen
+
 
 class AboutScreen extends StatelessWidget {
   @override
@@ -51,9 +52,9 @@ class AboutScreen extends StatelessWidget {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                _downloadNewsletter(context);
+                _downloadAndViewPDF(context);
               },
-              child: Text('Download Newsletter'),
+              child: Text('View Newsletter'),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white, backgroundColor: Colors.teal[300],
               ),
@@ -64,27 +65,29 @@ class AboutScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _downloadNewsletter(BuildContext context) async {
+  Future<void> _downloadAndViewPDF(BuildContext context) async {
     try {
       // Load the PDF file from assets
       final ByteData data = await rootBundle.load('assets/health.pdf');
       final List<int> bytes = data.buffer.asUint8List();
 
-      // Get the directory to save the file
-      final directory = await getApplicationDocumentsDirectory();
+      // Get the directory to save the file (use temporary directory)
+      final directory = await getTemporaryDirectory();
       final file = File('${directory.path}/health.pdf');
 
       // Write the PDF data to the file
       await file.writeAsBytes(bytes);
 
-      // Open the PDF file using a PDF viewer
-      if (await file.exists()) {
-        await launch(file.path);
-      } else {
-        _showErrorDialog(context, 'File not found.');
-      }
+      // Navigate to the PDF view screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => PdfViewScreen(path: file.path),
+        ),
+      );
     } catch (e) {
-      _showErrorDialog(context, 'Error downloading the newsletter.');
+      print('Error: $e');
+      _showErrorDialog(context, 'Error loading the PDF.');
     }
   }
 
