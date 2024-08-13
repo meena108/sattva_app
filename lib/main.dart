@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:timezone/data/latest.dart' as tz; // Import timezone initialization
 import 'drawer_screens/main_drawer.dart';
-import 'login.dart';
 import 'drawer_screens/articles_screen.dart';
-import 'drawer_screens/support_screen.dart';
+import 'drawer_screens/notification_screen.dart';
 import 'drawer_screens/about_screen.dart';
 import 'drawer_screens/dashboard_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized(); // Ensure widgets binding
+  tz.initializeTimeZones(); // Initialize timezones
   runApp(SattvaApp());
 }
 
@@ -20,10 +22,10 @@ class SattvaApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => MainDrawer(firstName: '',),
-        '/dashboard': (context) => DashboardScreen(firstName: ''),
+        '/': (context) => MainDrawer(firstName: ''),
+        '/dashboard': (context) => const DashboardScreen(firstName: ''),
         '/articles': (context) => ArticlesScreen(),
-        '/support': (context) =>   SupportScreen(),
+        '/notification': (context) => NotificationScreen(), // Notification screen route
         '/about': (context) => AboutScreen(),
       },
       debugShowCheckedModeBanner: false,

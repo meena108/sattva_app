@@ -39,9 +39,9 @@ class MainDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.support, color: Colors.teal[900]),
-            title: Text('Support', style: TextStyle(color: Colors.teal[900])),
+            title: Text('Notification', style: TextStyle(color: Colors.teal[900])),
             onTap: () {
-              Navigator.pushNamed(context, '/support');
+              Navigator.pushNamed(context, '/notification');
             },
           ),
           ListTile(
@@ -55,4 +55,6 @@ class MainDrawer extends StatelessWidget {
       ),
     );
   }
+
+
 }
