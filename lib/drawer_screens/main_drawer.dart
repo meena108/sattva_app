@@ -38,7 +38,7 @@ class MainDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.support, color: Colors.teal[900]),
+            leading: Icon(Icons.notifications, color: Colors.teal[900]),
             title: Text('Notification', style: TextStyle(color: Colors.teal[900])),
             onTap: () {
               Navigator.pushNamed(context, '/notification');
@@ -51,10 +51,15 @@ class MainDrawer extends StatelessWidget {
               Navigator.pushNamed(context, '/about');
             },
           ),
+          ListTile(
+            leading: Icon(Icons.self_improvement, color: Colors.teal[900]),
+            title: Text('Mindful Check-In', style: TextStyle(color: Colors.teal[900])),
+            onTap: () {
+              Navigator.pushNamed(context, '/mindfulCheckIn');
+            },
+          ),
         ],
       ),
     );
   }
-
-
 }
