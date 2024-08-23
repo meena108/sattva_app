@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'login.dart'; // Import the login screen
+import 'data/local/DatabaseHelper.dart';
+
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -15,6 +16,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+  final _dbHelper = DatabaseHelper();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
@@ -75,10 +77,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     return null;
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     if (_formKey.currentState?.validate() ?? false) {
-      // Handle registration logic here
-      // For now, just navigate back to the login screen
+      // Save the form data to the database
+      await _dbHelper.insertUser({
+        'firstName': _firstNameController.text,
+        'lastName': _lastNameController.text,
+        'email': _emailController.text,
+        'password': _passwordController.text,
+      });
+
       Navigator.pop(context); // Go back to the login screen
     }
   }

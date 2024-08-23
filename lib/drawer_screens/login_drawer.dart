@@ -7,7 +7,7 @@ class LoginDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
+          const DrawerHeader(
             decoration: BoxDecoration(
               color: Colors.blue,
             ),
@@ -20,15 +20,15 @@ class LoginDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.info),
-            title: Text('About'),
+            leading: const Icon(Icons.info),
+            title: const Text('About'),
             onTap: () {
               Navigator.pushNamed(context, '/about');
             },
           ),
           ListTile(
-            leading: Icon(Icons.support),
-            title: Text('Support'),
+            leading: const Icon(Icons.support),
+            title: const Text('Support'),
             onTap: () {
               Navigator.pushNamed(context, '/support');
             },
