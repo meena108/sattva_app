@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 class MindfulCheckInPage extends StatefulWidget {
+  const MindfulCheckInPage({super.key});
+
   @override
   _MindfulCheckInPageState createState() => _MindfulCheckInPageState();
 }
@@ -77,19 +79,28 @@ class _MindfulCheckInPageState extends State<MindfulCheckInPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mindful Check-In'),
+        backgroundColor: Colors.lightBlue[100], // Calm color for AppBar
       ),
-      body: Padding(
+      resizeToAvoidBottomInset: true, // Prevent bottom overflow
+      body: SingleChildScrollView( // Allow scroll when keyboard is open
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'How are you feeling today?',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black87),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             DropdownButton<String>(
               value: selectedEmotion,
+              dropdownColor: Colors.lightBlue[50], // Soothing dropdown color
+              icon: Icon(Icons.arrow_drop_down, color: Colors.blueGrey),
+              underline: Container(
+                height: 2,
+                color: Colors.lightBlueAccent, // Light underline
+              ),
+              style: TextStyle(color: Colors.blueGrey[700], fontSize: 18), // Soothing font color
               items: emotions.map((String emotion) {
                 return DropdownMenuItem<String>(
                   value: emotion,
@@ -102,10 +113,10 @@ class _MindfulCheckInPageState extends State<MindfulCheckInPage> {
                 });
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             const Text(
               'Journal Entry:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
             ),
             TextField(
               controller: _journalController,
@@ -115,33 +126,38 @@ class _MindfulCheckInPageState extends State<MindfulCheckInPage> {
                 hintText: 'Write your thoughts here...',
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Center(
               child: ElevatedButton(
                 onPressed: _submitCheckIn,
-                child: Text('Submit Check-In'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.lightBlue[100], // Light button color
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  textStyle: const TextStyle(fontSize: 18),
+                ),
+                child: const Text('Submit Check-In'),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             const Text(
               'Previous Check-Ins:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87),
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: checkInHistory.length,
-                itemBuilder: (context, index) {
-                  final checkIn = checkInHistory[index];
-                  return ListTile(
-                    title: Text(checkIn['emotion']!),
-                    subtitle: Text(
-                      '${checkIn['journal']}\nDate: ${checkIn['date']}',
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  );
-                },
-              ),
+            ListView.builder(
+              shrinkWrap: true, // Prevent ListView from taking infinite height
+              physics: NeverScrollableScrollPhysics(), // Let the outer SingleChildScrollView handle scrolling
+              itemCount: checkInHistory.length,
+              itemBuilder: (context, index) {
+                final checkIn = checkInHistory[index];
+                return ListTile(
+                  title: Text(checkIn['emotion']!),
+                  subtitle: Text(
+                    '${checkIn['journal']}\nDate: ${checkIn['date']}',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                );
+              },
             ),
           ],
         ),
